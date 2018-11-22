@@ -1,2 +1,2 @@
 # drone-demo
-drone ci test
+DRONE CI DEMO
