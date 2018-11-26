@@ -1,8 +1,10 @@
-def label = "mypod-${UUID.randomUUID().toString()}"
+def label = "my-jenkins-jenkins-slave"
 podTemplate(label: label) {
-    node('my-jenkins-jenkins-slave') {
+    node(label) {  
         stage('Run shell') {
-            sh 'echo hello world'
+            container('jnlp') {
+                 sh 'echo hello world'
+            }
         }
     }
 }
