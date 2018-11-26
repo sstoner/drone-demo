@@ -1,8 +1,8 @@
 pipeline {
   agent {
-    docker {
-      image "golang:alpine"
-    }
+podTemplate(inheritFrom: 'default-slave', instanceCap: 0, label: 'my-jenkins-jenkins-slave ', name: '', namespace: 'default', nodeSelector: '', podRetention: always(), serviceAccount: '', workspaceVolume: emptyDirWorkspaceVolume(false)) {
+
+}
   }
   stages {
     stage("build") {
