@@ -1,4 +1,4 @@
-def label = "my-jenkins-jenkins-slave"
+def label = "my-label"
 podTemplate(label: label) {
     node(label) {  
         stage('Run shell') {
