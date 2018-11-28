@@ -1,3 +1,4 @@
+pipeline {
 podTemplate(containers: [
     containerTemplate(alwaysPullImage: false, 
                         args: 'ls -l ', 
@@ -30,5 +31,6 @@ podTemplate(containers: [
                                 sh 'go version'
                               }
                         }
+}
 }
 
