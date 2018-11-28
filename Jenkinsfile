@@ -4,7 +4,7 @@ pipeline {
       label 'golang-build'
       containerTemplate {
         name 'golang'
-        image 'golang-apline'
+        image 'golang'
         ttyEnabled true
         command 'cat'
       }
