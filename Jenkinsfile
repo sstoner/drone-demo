@@ -1,36 +1,34 @@
 pipeline {
-podTemplate(containers: [
-    containerTemplate(alwaysPullImage: false, 
-                        args: 'ls -l ', 
-                        command: '/bin/sh -c', 
-                        envVars: [], 
-                        image: 'golang-alpine', 
-                        livenessProbe: containerLivenessProbe(execArgs: '', failureThreshold: 0, initialDelaySeconds: 0, periodSeconds: 0, successThreshold: 0, timeoutSeconds: 0), 
-                        name: 'golang-backend', 
-                        ports: [], 
-                        privileged: false, 
-                        resourceLimitCpu: '', 
-                        resourceLimitMemory: '', 
-                        resourceRequestCpu: '', 
-                        resourceRequestMemory: '', 
-                        shell: null, 
-                        ttyEnabled: true, 
-                        workingDir: '/home/jenkins')], 
-            inheritFrom: '', 
-            instanceCap: 0, 
-            label: 'my-label', 
-            name: 'ppk-cicd', 
-            namespace: 'default', 
-            nodeSelector: '', 
-            podRetention: always(), 
-            serviceAccount: '', 
-            workspaceVolume: emptyDirWorkspaceVolume(false)) 
-            {
-                    stage('Run shell') {
-                           container('golang-backend') {
-                                sh 'go version'
-                              }
-                        }
-}
-}
-
+  agent {
+    kubernetes {
+      label 'golang-build'
+      containerTemplate {
+        name 'golang'
+        image 'golang-apline'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
+  }
+  environment {
+    CONTAINER_ENV_VAR = 'container-env-var-value'
+  }
+  stages {
+    stage('Run golang') {
+      steps {
+        sh 'set'
+        sh "echo OUTSIDE_CONTAINER_ENV_VAR = ${CONTAINER_ENV_VAR}"
+        container('golang') {
+          sh 'go version'
+          sh 'uname -a'
+        }
+      }
+    }
+	stage('Run maven with a different shell') {
+		steps {
+		  container(name: 'golang', shell: 'sh') {
+			sh 'go version'
+		  }
+		}
+	  }
+  }
