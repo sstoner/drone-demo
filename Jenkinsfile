@@ -1,11 +1,26 @@
 pipeline {
   agent {
     kubernetes {
-      label 'golang-build-${UUID.randomUUID().toString()}'
-      podTemplate {
-      	containerTemplate(name: "golang", image: "golang", ttyEnabled: true, command: "cat"),     
-        containerTemplate(name: "busybox", image: "busybox", ttyEnabled: true, command: "cat")
-      }
+      defaultContainer "jenkins/jnlp-slave"
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata: 
+   labels: 
+     run-build: golang-build
+spec: 
+   containers:
+   - name: golang
+     image: golang
+     command: 
+     - cat
+     tty: true
+   - name: busybox
+     image: busybox
+     command: 
+     - cat 
+     tty: true
+      """      
     }
   }
   environment {
