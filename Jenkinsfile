@@ -8,6 +8,12 @@ pipeline {
         ttyEnabled true
         command 'cat'
       }
+      containerTemplate {
+        name 'busybox'
+        image 'busybox'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
   environment {
