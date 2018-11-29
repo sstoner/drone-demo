@@ -29,6 +29,9 @@ pipeline {
 		  container(name: 'golang', shell: 'sh') {
 			sh 'go version'
 		  }
+		  container(name: 'busybox') {
+			sh 'uname -a'
+		  }
 		}
 	  }
   }
