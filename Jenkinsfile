@@ -1,18 +1,10 @@
 pipeline {
   agent {
     kubernetes {
-      label 'golang-build'
-      containerTemplate {
-        name 'golang'
-        image 'golang'
-        ttyEnabled true
-        command 'cat'
-      }
-      containerTemplate {
-        name 'busybox'
-        image 'busybox'
-        ttyEnabled true
-        command 'cat'
+      label 'golang-build-${UUID.randomUUID().toString()}'
+      podTemplate {
+      	containerTemplate(name: "golang", image: "golang", ttyEnabled: true, command: "cat"),     
+        containerTemplate(name: "busybox", image: "busybox", ttyEnabled: true, command: "cat")
       }
     }
   }
@@ -20,7 +12,7 @@ pipeline {
     CONTAINER_ENV_VAR = 'container-env-var-value'
   }
   stages {
-    stage('Run golang') {
+    stage('Run golang build') {
       steps {
         sh 'set'
         sh "echo OUTSIDE_CONTAINER_ENV_VAR = ${CONTAINER_ENV_VAR}"
@@ -30,7 +22,7 @@ pipeline {
         }
       }
     }
-	stage('Run maven with a different shell') {
+	stage('deploy kubectl') {
 		steps {
 		  container(name: 'golang', shell: 'sh') {
 			sh 'go version'
