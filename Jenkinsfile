@@ -2,7 +2,6 @@ pipeline {
   agent {
     kubernetes {
       label 'my-build-golang'
-      defaultContainer "jenkinsci/jnlp-slave"
       yaml """
 apiVersion: v1
 kind: Pod
