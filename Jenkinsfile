@@ -47,5 +47,16 @@ spec:
 		  }
 		}
 	  }
+	  
+	  	stage('sleep test') {
+		steps {
+		  container(name: 'golang', shell: 'sh') {
+			sh 'go version'
+		  }
+		  container(name: 'busybox') {
+			sh 'sleep 600'
+		  }
+		}
+	  }
   }
 }
